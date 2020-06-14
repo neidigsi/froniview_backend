@@ -32,22 +32,26 @@ paths:
                         value:
                           type: integer
                           description: 'The value at the given timestamp in "W".'
+                        sum_of_values:
+                          type: integer
+                          description: 'The summed values to the given timestamp as "Wh".'
                   total:
                     type: string
                     description: 'The totally produced energy at the given day in "Wh".'
-                  sum_of_values:
-                    type: array
-                    description: 'The cumulated values per timestamp in "Wh".'
-                    items:
-                      type: object
-                      description: 'One timestamp-value pair, which is created each five minutes.'
-                      properties:
-                        timestamp:
-                          type: string
-                          description: 'The timestamp of the value. An example is "2018-08-17T17:40:01+02:00"'
-                        value:
-                          type: integer
-                          description: 'The summed values to the given timestamp as "Wh".'
+              examples:
+                Example:
+                  value:
+                    values:
+                      - timestamp: '2020-06-14T14:20:01.000Z'
+                        value: 1266
+                        sum_of_values: 10972
+                      - timestamp: '2020-06-14T14:25:01.000Z'
+                        value: 1701
+                        sum_of_values: 11095
+                      - timestamp: '2020-06-14T14:30:01.000Z'
+                        value: 2278
+                        sum_of_values: 11268
+                    total: 11268
         '400':
           description: The user will receive this response if the given date is not valid.
           content:
@@ -125,6 +129,7 @@ paths:
           name: year
           description: The year of the day as integer value.
           required: true
+      description: This endpoint is used to retrieve data of one day. The user receives an response with all necessary data which will be displayed in the diagram later.
   /month:
     get:
       summary: Your GET endpoint

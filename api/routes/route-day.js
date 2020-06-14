@@ -4,11 +4,15 @@
 
 // Import node_modules
 const express = require('express')
+const Sequelize = require('sequelize')
 
 // Import own_modules
+const Fronius = require('../models/fronius')
+const error = require('../config/error')
 
 // Initialize modules
 const router = express.Router()
+const Op = Sequelize.Op
 
 /*
 * Forward requests to the respective
@@ -18,9 +22,27 @@ const router = express.Router()
 * and not an entry of category.
  */
 router.get('/', function (req, res, next) {
-    return res.status(200).json({
-        message: "Day route"
+    let month = req.query.month
+    if (req.query.month < 10) {
+        month = '0' + month
+    }
+    let regex = req.query.year + '-' + month + '-' + req.query.day + '%'
+
+    Fronius.findAll({
+        where: {
+            timestamp: {
+                [Op.like]: regex
+            }
+        }
     })
+        .then(fronius => {
+            return res.status(200).json({
+                values: fronius
+            })
+        })
+        .catch(err => {
+            error.data.throwError(err, res)
+        })
 })
 
 module.exports = router;

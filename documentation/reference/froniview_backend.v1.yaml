@@ -9,7 +9,8 @@ paths:
   /day:
     get:
       summary: Data of one specific day
-      tags: []
+      tags:
+        - Day
       responses:
         '200':
           description: This is the response if the request could be successfully retrieved. It includes all data needed to display in the diagram view of the app.
@@ -127,21 +128,30 @@ paths:
   /month:
     get:
       summary: Your GET endpoint
-      tags: []
+      tags:
+        - Month
       responses: {}
       operationId: get-month
   /year:
     get:
       summary: Your GET endpoint
-      tags: []
+      tags:
+        - Year
       responses: {}
       operationId: get-year
-  /general:
+  '/year/{year}':
+    parameters:
+      - schema:
+          type: string
+        name: year
+        in: path
+        required: true
     get:
       summary: Your GET endpoint
-      tags: []
+      tags:
+        - Year
       responses: {}
-      operationId: get-general
+      operationId: get-year-year
 components:
   schemas: {}
   securitySchemes:

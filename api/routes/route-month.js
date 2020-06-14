@@ -70,8 +70,6 @@ const getDayValue = async function (year, month, day, res, cb) {
         }
         let regex = year + '-' + month + '-' + day + '%'
 
-        console.log(regex)
-
         Fronius.findAll({
             where: {
                 timestamp: {

@@ -6,13 +6,8 @@
 const Sequelize = require('sequelize')
 const dotenv = require('dotenv').config()
 
-module.exports = new Sequelize('mysql://' +
-    process.env.DBUSER +
-    ':' +
-    process.env.DBPASSWORD +
-    '@' +
-    process.env.DBIP +
-    ':' +
-    process.env.DBPORT +
-    '/' +
-    process.env.DBNAME)
+module.exports = new Sequelize(process.env.DBNAME, process.env.DBUSER, process.env.DBPASSWORD, {
+    host: process.env.DBIP,
+    dialect: "mysql",
+    port: process.env.DBPORT
+})

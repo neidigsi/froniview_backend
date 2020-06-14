@@ -1,0 +1,15 @@
+openapi: 3.0.0
+info:
+  title: Froniview API
+  version: '1.0'
+  description: 'This API follows the RESTful standard. It is for the "Froniview" App which is developed as an visualising android app of the solar-data of an inverter by "Fronius".'
+servers:
+  - url: localhost
+paths: {}
+components:
+  schemas: {}
+  securitySchemes:
+    JWT Token:
+      type: http
+      scheme: Bearer
+      description: ''

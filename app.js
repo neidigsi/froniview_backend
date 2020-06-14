@@ -5,7 +5,7 @@ const morgan = require('morgan')
 const swaggerUi = require('swagger-ui-express')
 const YAML = require('yamljs')
 
-const swaggerDocument = YAML.load('./documentation/reference/arp-api.v1.yaml')
+const swaggerDocument = YAML.load('./documentation/reference/froniview_backend.v1.yaml')
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use(morgan(('dev')))

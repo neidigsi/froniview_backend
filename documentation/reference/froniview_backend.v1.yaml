@@ -5,7 +5,158 @@ info:
   description: 'This API follows the RESTful standard. It is for the "Froniview" App which is developed as an visualising android app of the solar-data of an inverter by "Fronius".'
 servers:
   - url: localhost
-paths: {}
+paths:
+  /day:
+    get:
+      summary: Data of one specific day
+      tags:
+        - Day
+      responses:
+        '200':
+          description: This is the response if the request could be successfully retrieved. It includes all data needed to display in the diagram view of the app.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  values:
+                    type: array
+                    description: 'The currently produced energy in "W".'
+                    items:
+                      type: object
+                      description: 'One timestamp-value pair, which is created each five minutes.'
+                      properties:
+                        timestamp:
+                          type: string
+                          description: 'The timestamp of the value. An example is "2018-08-17T17:40:01+02:00"'
+                        value:
+                          type: integer
+                          description: 'The value at the given timestamp in "W".'
+                        sum_of_values:
+                          type: integer
+                          description: 'The summed values to the given timestamp as "Wh".'
+                  total:
+                    type: string
+                    description: 'The totally produced energy at the given day in "Wh".'
+              examples:
+                Example:
+                  value:
+                    values:
+                      - timestamp: '2020-06-14T14:20:01.000Z'
+                        value: 1266
+                        sum_of_values: 10972
+                      - timestamp: '2020-06-14T14:25:01.000Z'
+                        value: 1701
+                        sum_of_values: 11095
+                      - timestamp: '2020-06-14T14:30:01.000Z'
+                        value: 2278
+                        sum_of_values: 11268
+                    total: 11268
+        '400':
+          description: The user will receive this response if the given date is not valid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  day:
+                    type: integer
+                  month:
+                    type: integer
+                  year:
+                    type: integer
+              examples:
+                Example:
+                  value:
+                    message: 'Given date is not valid!'
+                    year: 20000
+                    month: 13
+                    day: 43
+        '404':
+          description: The user will receive this response if there could no data be found to the given date.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  year:
+                    type: integer
+                  month:
+                    type: integer
+                  day:
+                    type: integer
+              examples:
+                Example:
+                  value:
+                    message: 'No data could be found to given date!'
+                    year: 2012
+                    month: 12
+                    day: 31
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Example:
+                  value:
+                    error: {}
+      operationId: get-day
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: day
+          description: Day of month as integer value.
+          required: true
+        - schema:
+            type: integer
+          in: query
+          name: month
+          description: Month of the day as integer value.
+          required: true
+        - schema:
+            type: integer
+          in: query
+          name: year
+          description: The year of the day as integer value.
+          required: true
+      description: This endpoint is used to retrieve data of one day. The user receives an response with all necessary data which will be displayed in the diagram later.
+  /month:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - Month
+      responses: {}
+      operationId: get-month
+  /year:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - Year
+      responses: {}
+      operationId: get-year
+  '/year/{year}':
+    parameters:
+      - schema:
+          type: string
+        name: year
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags:
+        - Year
+      responses: {}
+      operationId: get-year-year
 components:
   schemas: {}
   securitySchemes:

@@ -132,11 +132,84 @@ paths:
       description: This endpoint is used to retrieve data of one day. The user receives an response with all necessary data which will be displayed in the diagram later.
   /month:
     get:
-      summary: Your GET endpoint
+      summary: Data of one specific month
       tags:
         - Month
-      responses: {}
+      responses:
+        '200':
+          description: This is the response if the request could be successfully retrieved. It includes all data needed to display in the diagram view of the app.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  values:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        timestamp:
+                          type: string
+                          description: 'The day in the following format: "yyyy-mm-dd".'
+                        value:
+                          type: integer
+                        sum_of_values:
+                          type: integer
+        '400':
+          description: The user will receive this response if the given month is not valid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  year:
+                    type: integer
+                  month:
+                    type: integer
+              examples:
+                Example:
+                  value:
+                    message: 'Given month is not valid!'
+                    year: 20000
+                    month: 13
+        '404':
+          description: The user will receive this response if there could no data be found to the given month.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  year:
+                    type: integer
+                  month:
+                    type: integer
+              examples:
+                Example:
+                  value:
+                    message: 'No data could be found to given month!'
+                    year: 2012
+                    month: 12
+        '500':
+          description: Internal Server Error
       operationId: get-month
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: month
+          description: Month of the year as integer value.
+          required: true
+        - schema:
+            type: integer
+          in: query
+          name: year
+          description: The year of the specific month as integer value.
+          required: true
+      description: This endpoint is used to retrieve data of a month. The user receives an response with all necessary data which will be displayed in the diagram later.
   /year:
     get:
       summary: Your GET endpoint

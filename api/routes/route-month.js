@@ -9,6 +9,7 @@ const Sequelize = require('sequelize')
 // Import own_modules
 const Fronius = require('../models/fronius')
 const error = require('../config/error')
+const checkAuth = require('../middleware/check-auth')
 
 // Initialize modules
 const router = express.Router()
@@ -21,7 +22,7 @@ const Op = Sequelize.Op
 * the users. To add a space to a category the user needs to edit the foreign key "categoryId" of the space
 * and not an entry of category.
  */
-router.get('/', async function (req, res, next) {
+router.get('/', checkAuth, async function (req, res, next) {
     /*
     * Return an error 400 if the given date is not valid
      */

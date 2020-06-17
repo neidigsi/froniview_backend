@@ -95,7 +95,7 @@ router.post('/login', (req, res, next) => {
 *     returns 409               = if the mail is invalid or a user with the mail already exists
 *     returns 500               = in error case
  */
-router.post('/signup', (req, res, next) => {
+/*router.post('/signup', (req, res, next) => {
     User.findAll({
         where: {
             mail: req.body.mail
@@ -110,12 +110,10 @@ router.post('/signup', (req, res, next) => {
                 })
             } else {
 
-                /*
-                * Only the hash of the password will be stored in the db.
-                * We add a "salt" of 10 to the password, that means 10 random chars, so that there cannot be any conclusions from hash to password.
-                *
-                * The bcrypt.hash method returns the hash in success case and an err in error case.
-                 */
+                // Only the hash of the password will be stored in the db.
+                // We add a "salt" of 10 to the password, that means 10 random chars, so that there cannot be any conclusions from hash to password.
+
+                // The bcrypt.hash method returns the hash in success case and an err in error case.
                 bcrypt.hash(req.body.password, 10, (err, hash) => {
                     if (err) {
                         return res.status(500).json({
@@ -150,6 +148,7 @@ router.post('/signup', (req, res, next) => {
         .catch(err => {
             error.data.throwError(err, res)
         })
-})
+})*/
+
 
 module.exports = router

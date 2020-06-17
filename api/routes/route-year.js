@@ -9,6 +9,8 @@ const Sequelize = require('sequelize')
 // Import own_modules
 const Fronius = require('../models/fronius')
 const error = require('../config/error')
+const dateOperations = require('../logic/date-operations')
+
 
 // Initialize modules
 const router = express.Router()
@@ -61,8 +63,6 @@ const getMonthValue = async function (year, month, res, cb) {
         }
         let regex = year + '-' + month + '%'
 
-        console.log(regex)
-
         Fronius.findAll({
             where: {
                 timestamp: {
@@ -76,13 +76,11 @@ const getMonthValue = async function (year, month, res, cb) {
                     let tmp_day = 1
                     for (let i = 0; i < fronius.length; i++) {
                         if (fronius[i + 1] === undefined ||
-                            String(fronius[i + 1].dataValues.timestamp).match('/' + year + '-' + month + '-' + tmp_day + '-(.*)/g') === false) {
+                            !dateOperations.data.dayIsEqual(fronius[i + 1].dataValues.timestamp, new Date(year, month, tmp_day))) {
                             sum += fronius[i].dataValues.day_energy
                             tmp_day++
                         }
                     }
-
-                    console.log(sum)
 
                     /*
                     * Return the highest sum-value of the day
@@ -98,10 +96,105 @@ const getMonthValue = async function (year, month, res, cb) {
     })
 }
 
-router.get('/', function (req, res, next) {
+router.get('/', async function (req, res, next) {
+    let values = []
+    let sum_of_values = 0
+
+    let firstYear = await getEdgeYear(true, res)
+    let lastYear = await getEdgeYear(false, res)
+
+    for (let i = firstYear; i <= lastYear; i++) {
+        let yearValue = await getYearValue(i, res)
+        if (yearValue >= 0) {
+            sum_of_values += yearValue
+            values.push({
+                timestamp: i,
+                value: yearValue,
+                sum_of_values: sum_of_values
+            })
+        } else {
+            continue
+        }
+    }
+
+    /*
+    * Return an the data successfully
+     */
     return res.status(200).json({
-        message: "General route"
+        values: values,
+        //total: values[values.length - 1].sum_of_values
     })
 })
+
+const getEdgeYear = async function (firstYear, res, cb) {
+    return new Promise((resolve, reject) => {
+        let order = ''
+
+        if (firstYear) {
+            order = 'ASC'
+        } else {
+            order = 'DESC'
+        }
+
+        Fronius.findAll({
+            order: [
+                ['timestamp', order]
+            ],
+            limit: 1
+        })
+            .then(fronius => {
+                if (fronius.length > 0) {
+                    resolve(parseInt(String(fronius[0].dataValues.timestamp).split(' ')[3]))
+                } else {
+                    resolve(-1)
+                }
+            })
+            .catch(err => {
+                error.data.throwError(err, res)
+            })
+    })
+}
+
+const getYearValue = async function (year, res, cb) {
+    return new Promise((resolve, reject) => {
+        let regex = year + '%'
+
+        Fronius.findAll({
+            where: {
+                timestamp: {
+                    [Op.like]: regex
+                }
+            }
+        })
+            .then(fronius => {
+                if (fronius.length > 0) {
+                    let sum = 0
+                    let tmp_day = 1
+                    let tmp_month = 1
+                    for (let i = 0; i < fronius.length; i++) {
+                        if (fronius[i + 1] === undefined ||
+                            !dateOperations.data.dayIsEqual(fronius[i + 1].dataValues.timestamp, new Date(year, tmp_month, tmp_day))) {
+                            if (fronius[i + 1] !== undefined
+                                && !dateOperations.data.monthIsEqual(fronius[i + 1].dataValues.timestamp, new Date(year, tmp_month))) {
+                                tmp_month++
+                            }
+                            sum += fronius[i].dataValues.day_energy
+                            tmp_day++
+                        }
+                    }
+
+                    /*
+                    * Return the highest sum-value of the day
+                     */
+                    resolve(sum)
+                } else {
+                    resolve(-1)
+                }
+            })
+            .catch(err => {
+                error.data.throwError(err, res)
+            })
+    })
+}
 
 module.exports = router;

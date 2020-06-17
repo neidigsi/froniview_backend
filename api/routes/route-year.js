@@ -10,7 +10,7 @@ const Sequelize = require('sequelize')
 const Fronius = require('../models/fronius')
 const error = require('../config/error')
 const dateOperations = require('../logic/date-operations')
-
+const checkAuth = require('../middleware/check-auth')
 
 // Initialize modules
 const router = express.Router()
@@ -19,7 +19,7 @@ const Op = Sequelize.Op
 /*
 * Forward requests to the respective
  */
-router.get('/:year', async function (req, res, next) {
+router.get('/:year', checkAuth, async function (req, res, next) {
     /*
     * Return an error 400 if the given date is not valid
      */
@@ -96,7 +96,7 @@ const getMonthValue = async function (year, month, res, cb) {
     })
 }
 
-router.get('/', async function (req, res, next) {
+router.get('/', checkAuth, async function (req, res, next) {
     let values = []
     let sum_of_values = 0
 

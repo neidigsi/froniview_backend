@@ -230,6 +230,88 @@ paths:
         - Year
       responses: {}
       operationId: get-year-year
+  /user/login:
+    post:
+      summary: Request an JWT to sign future requests
+      operationId: post-user-login
+      responses:
+        '200':
+          description: If the login was successful a JWT will be returned.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  token:
+                    type: string
+              examples:
+                Example:
+                  value:
+                    message: 'Auth successful!'
+                    token: yourJWT
+        '401':
+          description: 'There are two cases of failure. The first case is a wrong password, the second a wrong mail. Both times the user receives the same response to prevent brute force attacks to spoof passwords.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Auth failed!'
+              examples:
+                Example:
+                  value:
+                    message: 'Auth failed!'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Example:
+                  value:
+                    error: {}
+      description: |-
+        All of the user requests need to be signed by a unique token. This token contains the user-mail, the user-id, a signing-timestamp and a expiration-time. A token expires in one hour.
+
+        With the generated token the user is able to sign his request and obtains access to specific request routes. Which user has access to which routes will be discussed in the routes documentations.
+
+        The following documentation describes how a user requests a token from the server.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: 'Content-Type: application/json'
+          description: ''
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mail:
+                  type: string
+                password:
+                  type: string
+              required:
+                - mail
+                - password
+            examples:
+              Example:
+                value:
+                  mail: your@mail.com
+                  password: yourpassword
+        description: The user needs to verify himself to the server in order to generate a JSON Web Token.
+      tags:
+        - User
 components:
   schemas: {}
   securitySchemes:

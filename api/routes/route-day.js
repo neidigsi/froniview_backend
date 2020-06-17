@@ -9,6 +9,8 @@ const Sequelize = require('sequelize')
 // Import own_modules
 const Fronius = require('../models/fronius')
 const error = require('../config/error')
+const checkAuth = require('../middleware/check-auth')
+
 
 // Initialize modules
 const router = express.Router()
@@ -17,7 +19,7 @@ const Op = Sequelize.Op
 /*
 * Retrieve requests GET to the path /day
  */
-router.get('/', function (req, res, next) {
+router.get('/', checkAuth, function (req, res, next) {
     let month = req.query.month
     if (req.query.month < 10) {
         month = '0' + month

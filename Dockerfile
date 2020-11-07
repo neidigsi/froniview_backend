@@ -1,8 +1,9 @@
-FROM node:12.13.0
-RUN cd home
-RUN apt update
-RUN apt install python
+FROM node:12
+WORKDIR /usr/src/app
+RUN apt-get update
+RUN apt-get install python
 COPY . .
 RUN npm install
 RUN npm install bcrypt
-CMD [ "npm", "start" ]
+EXPOSE 80
+CMD [ "node", "server.js" ]

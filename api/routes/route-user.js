@@ -32,9 +32,18 @@ const router = express.Router()
 *     returns 500               = in error case
  */
 router.post('/login', (req, res, next) => {
+    let mail = req.body.mail
+    let password = req.body.password
+
+    if (mail == undefined) {
+        mail = req.query.mail
+    }
+    if (password == undefined) {
+        password = req.query.password
+    }
     User.findAll({
         where: {
-            mail: req.body.mail
+            mail: mail
         }
     })
         .then(user => {
@@ -44,10 +53,8 @@ router.post('/login', (req, res, next) => {
                 })
             }
 
-            console.log(user[0].password)
-            console.log(req.body.password)
             // validate if the given password fits to password stored in the db
-            bcrypt.compare(req.body.password, user[0].password, function (err, result) {
+            bcrypt.compare(password, user[0].password, function (err, result) {
 
                 // in case the password are same generate and return a JWT
                 if (result) {

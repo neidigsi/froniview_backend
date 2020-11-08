@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "1729ee7a-287a-4d34-a90a-5f1e0ff41eac",
+		"name": "Froniview",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Day-Data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{day-route}}?day=14&month=6&year=2020",
+					"host": [
+						"{{day-route}}"
+					],
+					"query": [
+						{
+							"key": "day",
+							"value": "14"
+						},
+						{
+							"key": "month",
+							"value": "6"
+						},
+						{
+							"key": "year",
+							"value": "2020"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Month-Data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{month-route}}?month=2&year=2020",
+					"host": [
+						"{{month-route}}"
+					],
+					"query": [
+						{
+							"key": "month",
+							"value": "2"
+						},
+						{
+							"key": "year",
+							"value": "2020"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Year-Data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{year-route}}/2020",
+					"host": [
+						"{{year-route}}"
+					],
+					"path": [
+						"2020"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get General-Data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{year-route}}",
+					"host": [
+						"{{year-route}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Signup",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Simon Neidig\",\n    \"mail\": \"simon@neidig-web.de\",\n    \"password\": \"=!FroniviewSimon!=\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{signup-route}}",
+					"host": [
+						"{{signup-route}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtYWlsIjoiMkAzLmRlIiwiaWQiOiJjZjdiOGQzZjg3MjM4NDIyNjQ3MTUxZjYiLCJpYXQiOjE1NzYwMDQ0NTIsImV4cCI6MTU3NjAwODA1Mn0.LcGaa975Qq5I17SFsTva63feykkDMgziB4lO3dlaL0Q",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"mail\": \"simon@neidig-web.de\",\n    \"password\": \"=!FroniviewSimon!=\"\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "{{login-route}}",
+					"host": [
+						"{{login-route}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

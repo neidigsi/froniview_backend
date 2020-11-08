@@ -21,10 +21,15 @@ const Op = Sequelize.Op
  */
 router.get('/', checkAuth, function (req, res, next) {
     let month = req.query.month
+    let day = req.query.day
     if (req.query.month < 10) {
         month = '0' + month
     }
-    let regex = req.query.year + '-' + month + '-' + req.query.day + '%'
+    if (req.query.day < 10) {
+        day = '0' + day
+    }
+
+    let regex = req.query.year + '-' + month + '-' + day + '%'
 
     /*
     * Return an error 400 if the given date is not valid

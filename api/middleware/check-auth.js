@@ -24,12 +24,25 @@ module.exports = (req, res, next) => {
    *        - id: User ID
    *        - mail: User Mail
    */
-    const token = req.headers.authorization.split(" ")[1]
+    let token = undefined
+
+    if (req.headers.authorization == undefined) {
+      console.log("query")
+      token = req.query.token
+    } else {
+      console.log("header")
+      console.log(req.headers.authorization)
+      token = req.headers.authorization.split(" ")[1]
+    }
+
+    console.log(token)
+
     const decoded = jwt.verify(token, process.env.JWT_KEY)
     req.userData = decoded
 
     next()
   } catch (error) {
+    console.log("error")
     return res.status(401).json({
       message: 'Auth failed!'
     })

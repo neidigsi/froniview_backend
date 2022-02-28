@@ -102,7 +102,7 @@ router.post('/login', (req, res, next) => {
 *     returns 409               = if the mail is invalid or a user with the mail already exists
 *     returns 500               = in error case
  */
-/*router.post('/signup', (req, res, next) => {
+router.post('/signup', (req, res, next) => {
     User.findAll({
         where: {
             mail: req.body.mail
@@ -155,7 +155,7 @@ router.post('/login', (req, res, next) => {
         .catch(err => {
             error.data.throwError(err, res)
         })
-})*/
+})
 
 
 module.exports = router

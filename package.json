@@ -29,7 +29,7 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
-    "jest": "^24.9.0",
+    "jest": "^30.3.0",
     "superagent": "^5.1.1",
     "supertest": "^4.0.2"
   },

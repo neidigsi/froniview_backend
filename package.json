@@ -18,7 +18,7 @@
     "morgan": "^1.10.1",
     "mysql2": "^2.1.0",
     "node-pre-gyp": "^0.14.0",
-    "nodemon": "^1.19.4",
+    "nodemon": "^3.1.14",
     "retry-as-promised": "^3.2.0",
     "sequelize": "^6.37.8",
     "swagger-ui-express": "^4.1.2",

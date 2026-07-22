@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "axios": "^1.16.0",
+    "axios": "^1.18.0",
     "bcrypt": "^3.0.8",
     "bluebird": "^3.7.1",
     "chalk": "^3.0.0",

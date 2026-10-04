@@ -16,7 +16,7 @@
     "moment": "^2.29.2",
     "moment-timezone": "^0.5.35",
     "morgan": "^1.11.0",
-    "mysql2": "^3.22.0",
+    "mysql2": "^3.23.1",
     "node-pre-gyp": "^0.14.0",
     "nodemon": "^3.1.14",
     "retry-as-promised": "^3.2.0",
